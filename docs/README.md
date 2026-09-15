@@ -19,6 +19,11 @@ config:
           icon: material-symbols:article
         -
           theme: alt
+          text: 程序员手册
+          link: /handbook/
+          icon: material-symbols:menu-book
+        -
+          theme: alt
           text: Github
           link: https://github.com/wemesh-hecy
           # suffixIcon: simple-icons:github

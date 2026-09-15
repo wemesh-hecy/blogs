@@ -1,25 +1,60 @@
 name: deploy
 
 on:
-  # 每当 push 到 main 分支时触发部署
-  # Deployment is triggered whenever a push is made to the main branch.
-  push:
-    branches: [main]
-  # 手动触发部署
-  # Manually trigger deployment
-  workflow_dispatch:
+  repository_dispatch:
+    types: [notion-updated]
+  workflow_dispatch:      # 保留手动触发，方便临时部署
+
+permissions:
+  contents: write
 
 jobs:
   docs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # 拉取 blogs 仓库
+      - name: Checkout blogs repository
+        uses: actions/checkout@v4
         with:
           # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
           # "Last updated time" and other git log-related information require fetching all commit records.
           fetch-depth: 0
 
+      # 版本号来自 notion 传来的 payload
+      - name: Resolve version
+        id: v
+        run: |
+          V="${{ github.event.client_payload.version }}"
+          [ -z "$V" ] && V="manual"
+          echo "version=$V" >> $GITHUB_OUTPUT
+
+      # 拉取 notion 笔记仓库
+      - name: Checkout notion repository
+        uses: actions/checkout@v4
+        with:
+          repository: wemesh-hecy/notion   # 替换为实际的 notion 仓库
+          path: notion-src
+          token: ${{ secrets.NOTION_REPO_PAT }}  # 私有仓库必需
+    
+      - name: Sync notes from notion
+        run: |
+          CONFIG="notion-src/sync-dirs.txt"
+          if [[ ! -f "$CONFIG" ]]; then
+            echo "::error::未找到 $CONFIG"
+            exit 1
+          fi
+          while IFS= read -r DIR; do
+            [[ -z "$DIR" || "$DIR" =~ ^# ]] && continue
+            DIR=$(echo "$DIR" | tr -d '\r' | xargs)
+            [[ ! -d "notion-src/$DIR" ]] && { echo "::warning::目录 $DIR 不存在，跳过"; continue; }
+            echo "同步目录: $DIR"
+            rm -rf "docs/$DIR"
+            mkdir -p "docs/$DIR"
+            rsync -av --exclude='.git' --exclude='.github' "notion-src/$DIR/" "docs/$DIR/"
+          done < "$CONFIG"
+      
+      # 设置 pnpm
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
 
@@ -29,12 +64,10 @@ jobs:
           # 选择要使用的 node 版本
           node-version: 24
 
-
       # 安装依赖
       # Install dependencies
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
-
 
       # 运行构建脚本
       # Run the build script

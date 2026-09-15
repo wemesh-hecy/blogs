@@ -16,6 +16,10 @@ import navbar from './navbar'
 
 /**
  * @see https://theme-plume.vuejs.press/config/theme/
+ *
+ * 内容结构由 `docs/` 一级目录动态生成，配置写在各目录 README.md：
+ * - type: post（列表，如博客）或 doc（侧边栏文档，如手册）
+ * - 博客默认开启分类（子目录即分类）
  */
 export default defineThemeConfig({
   logo: '/wemesh-logo.svg',
@@ -35,7 +39,7 @@ export default defineThemeConfig({
 
   // 是否启用深色模式切换按钮
   appearance: true,
-  
+
   navbar,
   collections,
   footer: {
