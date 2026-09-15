@@ -1,0 +1,33 @@
+{
+  "name": "微码笔记",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Hecy的零碎笔记",
+  "packageManager": "pnpm@11.7.0",
+  "author": "记忆的格式化 <hcy_email@163.com>",
+  "license": "MIT",
+  "scripts": {
+    "docs:build": "vuepress build docs --clean-cache --clean-temp",
+    "docs:dev": "vuepress dev docs",
+    "docs:dev-clean": "vuepress dev docs --clean-cache --clean-temp",
+    "docs:preview": "http-server docs/.vuepress/dist",
+    "vp-update": "pnpm dlx vp-update"
+  },
+  "devDependencies": {
+    "@vuepress/bundler-vite": "2.0.0-rc.31",
+    "http-server": "^14.1.1",
+    "typescript": "^6.0.3",
+    "vue": "^3.5.34",
+    "vuepress": "2.0.0-rc.31",
+    "vuepress-theme-plume": "1.0.0-rc.210"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.0.0"
+  },
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "ogl": "^1.0.11",
+    "three": "^0.186.0",
+    "vuepress-plugin-knowledge-graph": "^0.2.1"
+  }
+}
