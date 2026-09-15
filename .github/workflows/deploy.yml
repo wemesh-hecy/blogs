@@ -15,7 +15,7 @@ jobs:
     steps:
       # 拉取 blogs 仓库
       - name: Checkout blogs repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
           # "Last updated time" and other git log-related information require fetching all commit records.
@@ -31,7 +31,7 @@ jobs:
 
       # 拉取 notion 笔记仓库
       - name: Checkout notion repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: wemesh-hecy/notion   # 替换为实际的 notion 仓库
           path: notion-src
@@ -80,7 +80,7 @@ jobs:
       # 查看 workflow 的文档来获取更多信息
       # @see https://github.com/crazy-max/ghaction-github-pages
       - name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v4
+        uses: crazy-max/ghaction-github-pages@v5
         with:
           # 部署到 gh-pages 分支
           target_branch: gh-pages
