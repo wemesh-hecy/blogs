@@ -43,7 +43,7 @@ export default defineUserConfig({
   plugins: [
     knowledgeGraphPlugin({
       includeTags: true,        // 将 frontmatter 中的 tags 生成为独立节点
-      includeAttachments: true, // 将本地附件生成为节点
+      includeAttachments: false, // 将本地附件生成为节点
       includeMissing: true,     // 将未创建文件的链接生成为半透明节点
     }),
   ],
