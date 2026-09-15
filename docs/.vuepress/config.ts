@@ -15,7 +15,7 @@ import { plumeTheme } from 'vuepress-theme-plume'
 import { knowledgeGraphPlugin } from 'vuepress-plugin-knowledge-graph'
 
 export default defineUserConfig({
-  base: '/',
+  base: '/blogs/',
   lang: 'zh-CN',
   title: '微码笔记',
   description: 'Hecy的零碎笔记',
